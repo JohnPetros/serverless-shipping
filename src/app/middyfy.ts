@@ -3,7 +3,7 @@ import validator from '@middy/validator'
 import { transpileSchema } from '@middy/validator/transpile'
 import middyJsonBodyParser from '@middy/http-json-body-parser'
 
-import { ApiError, AppError } from '@core/errors'
+import { ApiError, AppError, AuthError } from '@core/errors'
 import { HTTP_STATUS_CODE } from '@core/constants'
 import type { AwsEvent } from './aws/types'
 
@@ -50,6 +50,12 @@ export function middyfy(awsFunction: (event: AwsEvent) => void, schema?: object)
           errorResponse.title = error.title
           errorResponse.message = error.message
           errorResponse.statusCode = error.statusCode
+        }
+
+        if (error instanceof AuthError) {
+          errorResponse.title = error.title
+          errorResponse.message = error.message
+          errorResponse.statusCode = HTTP_STATUS_CODE.unauthorized
         }
       }
 
