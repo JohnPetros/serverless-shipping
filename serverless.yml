@@ -1,0 +1,33 @@
+org: sertton
+app: serverless-app
+service: serverless-shipping
+
+plugins:
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+  memorySize: 512
+  timeout: 10
+  tracing:
+    lambda: true
+  environment:
+    DOMAIN: ${env:DOMAIN}
+    ORIGIN_ZIPCODE: ${env:ORIGIN_ZIPCODE}
+    MELHOR_ENVIO_CLIENT_ID: ${env:MELHOR_ENVIO_CLIENT_ID}
+    MELHOR_ENVIO_SECRET: ${env:MELHOR_ENVIO_SECRET}
+    MELHOR_ENVIO_URL: ${env:MELHOR_ENVIO_URL}
+    MELHOR_ENVIO_API_URL: ${env:MELHOR_ENVIO_API_URL}
+    MELHOR_ENVIO_REDIRECT_URI: ${env:MELHOR_ENVIO_REDIRECT_URI}
+   
+
+functions:
+  authorize:
+    handler: ./src/app/aws/functions/auth/authorize.handler
+    events:
+      - http:
+          path: /api/auth/authorize
+          method: GET
+          cors: true
