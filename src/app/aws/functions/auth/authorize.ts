@@ -15,6 +15,3 @@ function authorize(event: AwsEvent) {
 }
 
 export const handler = middyfy(authorize)
-
-// chave secreta=TN+IOujGIXTRRWRgcc7NurkgyDifpqPaLSrVA9Tf
-// chave de acesso=AKIA2NK3XYJ5KPWCEG7M
