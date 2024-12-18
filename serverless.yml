@@ -5,6 +5,10 @@ service: serverless-shipping
 plugins:
   - serverless-offline
 
+stages:
+  prod:
+    observability: true 
+
 provider:
   name: aws
   runtime: nodejs20.x
@@ -20,8 +24,7 @@ provider:
     MELHOR_ENVIO_SECRET: ${env:MELHOR_ENVIO_SECRET}
     MELHOR_ENVIO_URL: ${env:MELHOR_ENVIO_URL}
     MELHOR_ENVIO_API_URL: ${env:MELHOR_ENVIO_API_URL}
-    MELHOR_ENVIO_REDIRECT_URI: ${env:MELHOR_ENVIO_REDIRECT_URI}
-   
+    REDIS_URL: ${env:REDIS_URL}
 
 functions:
   authorize:
@@ -29,5 +32,12 @@ functions:
     events:
       - http:
           path: /api/auth/authorize
+          method: GET
+          cors: true
+  callback:
+    handler: ./src/app/aws/functions/auth/callback.handler
+    events:
+      - http:
+          path: /api/auth/callback
           method: GET
           cors: true
