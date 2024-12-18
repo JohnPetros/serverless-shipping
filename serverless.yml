@@ -43,6 +43,14 @@ functions:
           method: GET
           cors: true
 
+  refresh-token:
+    handler: ./src/app/aws/functions/auth/refresh-token.handler
+    events:
+      - http:
+          path: /api/auth/refresh-token
+          method: GET
+          cors: true
+
   calculate-quotes:
     handler: ./src/app/aws/functions/shipping/calculate-quotes.handler
     events:
