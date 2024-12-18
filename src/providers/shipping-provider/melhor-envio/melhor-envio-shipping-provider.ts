@@ -3,8 +3,6 @@ import type { Jwt, Product, Quote } from '@core/types'
 import type { ApiClientProvider, ShippingProvider } from '@core/interfaces'
 import { ENV } from '@constants/index'
 
-const MELHOR_ENVIO_REDIRECT_URI = '/auth/callback'
-
 export class MelhorEnvioShippingProvider implements ShippingProvider {
   private api: ApiClientProvider
 
@@ -20,7 +18,7 @@ export class MelhorEnvioShippingProvider implements ShippingProvider {
   ): Promise<Quote[]> {
     this.api.setBearerToken(token)
 
-    const quotes = await this.api.post<MelhorEnvioQuote[]>(
+    const response = await this.api.post<MelhorEnvioQuote[]>(
       '/api/v2/me/Shipping/calculate',
       {
         from: {
@@ -39,6 +37,10 @@ export class MelhorEnvioShippingProvider implements ShippingProvider {
         })),
       },
     )
+
+    if (response.isFailure) response.throwError()
+
+    const quotes = response.body
 
     return quotes
       .filter((quote) => !quote.error)
@@ -61,14 +63,14 @@ export class MelhorEnvioShippingProvider implements ShippingProvider {
       grant_type: 'authorization_code',
       client_id: ENV.melhorEnvioClientId,
       client_secret: ENV.melhorEnvioSecret,
-      redirect_uri: `${ENV.domain}/${MELHOR_ENVIO_REDIRECT_URI}`,
       code,
     }
 
-    const { access_token, refresh_token } = await this.api.post<MelhorEnvioToken>(
-      '/oauth/token',
-      body,
-    )
+    const response = await this.api.post<MelhorEnvioToken>('/oauth/token', body)
+
+    if (response.isFailure) response.throwError()
+
+    const { access_token, refresh_token } = response.body
 
     return {
       accessToken: access_token,
@@ -84,8 +86,11 @@ export class MelhorEnvioShippingProvider implements ShippingProvider {
       refresh_token: refreshToken,
     }
 
-    const { access_token, refresh_token, expires_in } =
-      await this.api.post<MelhorEnvioToken>('/oauth/token', body)
+    const response = await this.api.post<MelhorEnvioToken>('/oauth/token', body)
+
+    if (response.isFailure) response.throwError()
+
+    const { access_token, refresh_token, expires_in } = response.body
 
     return {
       accessToken: access_token,
