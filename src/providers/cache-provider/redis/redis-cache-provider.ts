@@ -15,7 +15,7 @@ export class RedisCacheProvider implements CacheProvider {
     await this.redis.set(key, JSON.stringify(data))
   }
 
-  async get<Data>(key: string): Promise<Data | null> {
+  async get<Data = string>(key: string): Promise<Data | null> {
     const data = await this.redis.get(key)
     if (data) return JSON.parse(data)
 

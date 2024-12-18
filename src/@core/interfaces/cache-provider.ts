@@ -1,5 +1,5 @@
 export interface CacheProvider {
   set(key: string, data: unknown): Promise<void>
-  get(key: string): Promise<string | null>
+  get<Data = string>(key: string): Promise<Data | null>
   delete(key: string): Promise<void>
 }

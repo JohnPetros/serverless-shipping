@@ -4,5 +4,5 @@ export interface ShippingProvider {
   getAuthUrl(): Promise<string>
   getToken(code: string): Promise<Jwt>
   refreshToken(refreshToken: string): Promise<Jwt>
-  calculateQuotes(products: Product[], zipcode: string, token: string): Promise<Quote[]>
+  calculateQuotes(zipcode: string, products: Product[], token: string): Promise<Quote[]>
 }

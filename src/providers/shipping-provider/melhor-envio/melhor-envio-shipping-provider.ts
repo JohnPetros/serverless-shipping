@@ -12,14 +12,14 @@ export class MelhorEnvioShippingProvider implements ShippingProvider {
     api.setBaseUrl(ENV.melhorEnvioUrl)
   }
   async calculateQuotes(
-    products: Product[],
     zipcode: string,
+    products: Product[],
     token: string,
   ): Promise<Quote[]> {
     this.api.setBearerToken(token)
 
     const response = await this.api.post<MelhorEnvioQuote[]>(
-      '/api/v2/me/Shipping/calculate',
+      '/api/v2/me/shipment/calculate',
       {
         from: {
           postal_code: zipcode,
