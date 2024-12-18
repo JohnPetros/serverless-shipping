@@ -1,6 +1,8 @@
+import type { ApiResponse } from '@core/responses/api-response'
+
 export interface ApiClientProvider {
-  get<Response>(url: string): Promise<Response>
-  post<Response>(url: string, body: unknown): Promise<Response>
+  get<Body>(url: string): Promise<ApiResponse<Body>>
+  post<Body>(url: string, body: unknown): Promise<ApiResponse<Body>>
   setBaseUrl(url: string): void
   setBearerToken(token: string): void
   setHeader(key: string, value: string): void
