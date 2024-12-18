@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "lib": ["ES2022"],
+    "module": "ES2022",
+    "moduleResolution": "Bundler",
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "target": "ES2022",
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "@core/*": ["src/@core/*"],
+      "@app/*": ["src/app/*"],
+      "@providers/*": ["src/providers/*"],
+      "@constants/*": ["src/constants/*"]
+    }
+  },
+  "include": ["src/**/*.ts"]
+}
