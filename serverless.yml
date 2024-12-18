@@ -34,10 +34,19 @@ functions:
           path: /api/auth/authorize
           method: GET
           cors: true
+
   callback:
     handler: ./src/app/aws/functions/auth/callback.handler
     events:
       - http:
           path: /api/auth/callback
           method: GET
+          cors: true
+
+  calculate-quotes:
+    handler: ./src/app/aws/functions/shipping/calculate-quotes.handler
+    events:
+      - http:
+          path: /api/shipping/quotes
+          method: POST
           cors: true
