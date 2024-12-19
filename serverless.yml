@@ -18,7 +18,6 @@ provider:
   tracing:
     lambda: true
   environment:
-    DOMAIN: ${env:DOMAIN}
     ORIGIN_ZIPCODE: ${env:ORIGIN_ZIPCODE}
     MELHOR_ENVIO_CLIENT_ID: ${env:MELHOR_ENVIO_CLIENT_ID}
     MELHOR_ENVIO_SECRET: ${env:MELHOR_ENVIO_SECRET}
