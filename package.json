@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Serverless application for shipping quote calculation",
   "scripts": {
-    "dev": "serverless offline start --reloadHandler ",
+    "local": "serverless offline start --reloadHandler ",
     "deploy:dev": "serverless deploy --stage dev",
     "deploy:prod": "serverless deploy --stage prod"
   },
