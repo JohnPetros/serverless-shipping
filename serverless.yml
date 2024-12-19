@@ -1,13 +1,9 @@
-org: sertton
+org: serttonindustrial
 app: serverless-app
 service: serverless-shipping
 
 plugins:
   - serverless-offline
-
-stages:
-  prod:
-    observability: true 
 
 provider:
   name: aws
@@ -22,7 +18,6 @@ provider:
     MELHOR_ENVIO_CLIENT_ID: ${env:MELHOR_ENVIO_CLIENT_ID}
     MELHOR_ENVIO_SECRET: ${env:MELHOR_ENVIO_SECRET}
     MELHOR_ENVIO_URL: ${env:MELHOR_ENVIO_URL}
-    MELHOR_ENVIO_API_URL: ${env:MELHOR_ENVIO_API_URL}
     REDIS_URL: ${env:REDIS_URL}
 
 functions:
