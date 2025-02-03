@@ -1,95 +1,136 @@
-# Serverless - AWS Node.js Typescript
+<h1 align="center">
+  Serverless Shipping 📦
+</h1>
 
-This project has been generated using the `aws-nodejs-typescript` template from the [Serverless framework](https://www.serverless.com/).
+<div align="center">
+   <a href="https://github.com/JohnPetros">
+      <img alt="Made by JohnPetros" src="https://img.shields.io/badge/made%20by-JohnPetros-blueviolet">
+   </a>
+   <img alt="GitHub Language Count" src="https://img.shields.io/github/languages/count/JohnPetros/shipment-service">
+   <a href="https://github.com/JohnPetros/shipment-service/commits/main">
+      <img alt="GitHub Last Commit" src="https://img.shields.io/github/last-commit/JohnPetros/shipment-service">
+   </a>
+  </a>
+   </a>
+   <a href="https://github.com/JohnPetros/shipment-service/blob/main/LICENSE.md">
+      <img alt="GitHub License" src="https://img.shields.io/github/license/JohnPetros/shipment-service">
+   </a>
+    <img alt="Stargazers" src="https://img.shields.io/github/stars/JohnPetros/shipment-service?style=social">
+</div>
+<br>
 
-For detailed instructions, please refer to the [documentation](https://www.serverless.com/framework/docs/providers/aws/).
 
-## Installation/deployment instructions
 
-Depending on your preferred package manager, follow the instructions below to deploy your project.
+## 🖥️ About the project
 
-> **Requirements**: NodeJS `lts/fermium (v.14.15.0)`. If you're using [nvm](https://github.com/nvm-sh/nvm), run `nvm use` to ensure you're using the same Node version in local and in your lambda's runtime.
+Serverless Shipping is a **serverless application** that calculates the price of each shipping quote available to a given zipcode.
 
-### Using NPM
+This app is running on **[AWS Lamda service](https://aws.amazon.com/pt/pm/lambda/?gclid=CjwKCAiAzPy8BhBoEiwAbnM9O193pIDplZE68VBbVOfLS64Pmifgnp06AWNQVISGQZmRa9aTH-uAhRoCsgMQAvD_BwE&trk=56f58804-91cd-4af4-98d4-afe277a57fd3&sc_channel=ps&ef_id=CjwKCAiAzPy8BhBoEiwAbnM9O193pIDplZE68VBbVOfLS64Pmifgnp06AWNQVISGQZmRa9aTH-uAhRoCsgMQAvD_BwE:G:s&s_kwcid=AL!4422!3!651510591822!e!!g!!amazon%20lambda!19828231347!148480170233)**, that means there is no need for manual server, infrastructure and scalability management. The app is able to scale automatically based on the demand.
 
-- Run `npm i` to install the project dependencies
-- Run `npx sls deploy` to deploy this stack to AWS
+It has been used for the mobile app **[Sertton](https://github.com/JohnPetros/sertton)** where the user can calculate the price based on their zipcode before buying an item on the e-commerce.
 
-### Using Yarn
+This app uses [Melhor Envio API](https://docs.melhorenvio.com.br/reference/introducao-api-melhor-envio) under the hood, a free shipment plataform that intermediates several brazilian shipping companies.
 
-- Run `yarn` to install the project dependencies
-- Run `yarn sls deploy` to deploy this stack to AWS
+---
 
-## Test your service
+## ✨ Features
 
-This template contains a single lambda function triggered by an HTTP request made on the provisioned API Gateway REST API `/hello` route with `POST` method. The request body must be provided as `application/json`. The body structure is tested by API Gateway against `src/functions/hello/schema.ts` JSON-Schema definition: it must contain the `name` property.
+### Auth
 
-- requesting any other path than `/hello` with any other method than `POST` will result in API Gateway returning a `403` HTTP error code
-- sending a `POST` request to `/hello` with a payload **not** containing a string property named `name` will result in API Gateway returning a `400` HTTP error code
-- sending a `POST` request to `/hello` with a payload containing a string property named `name` will result in API Gateway returning a `200` HTTP status code with a message saluting the provided name and the detailed event processed by the lambda
+- [x] This App should be authenticated by **Melhor Envio API** using [OAuth protocol](https://jwt.io/), where the former should behave client and resource server
+- [x] This App should request to **Melhor Envio** refresh the auth token every week on Sunday 00:00
+- [x] This App should validate the access token before sending to **Melhor Envio API**
+- [x] This App should store both access token and refresh token in cache
 
-> :warning: As is, this template, once deployed, opens a **public** endpoint within your AWS account resources. Anybody with the URL can actively execute the API Gateway endpoint and the corresponding lambda. You should protect this endpoint with the authentication method of your choice.
 
-### Locally
+### Shipping quote calculation
 
-In order to test the hello function locally, run the following command:
+- [x] This App should return the shipping quotes based on **Sertton**'s zipcode and the customer's zipcode and price, quantity and dimensions of the requested products (width, height, weight and length)
 
-- `npx sls invoke local -f hello --path src/functions/hello/mock.json` if you're using NPM
-- `yarn sls invoke local -f hello --path src/functions/hello/mock.json` if you're using Yarn
+---
 
-Check the [sls invoke local command documentation](https://www.serverless.com/framework/docs/providers/aws/cli-reference/invoke-local/) for more information.
+## ⚙️ Architecture
 
-### Remotely
+## 🛠️ Technologies, tools and services
 
-Copy and replace your `url` - found in Serverless `deploy` command output - and `name` parameter in the following `curl` command in your terminal or in Postman to test your newly deployed application.
+- **[NodeJs](https://nodejs.org/en)** for running JavaScript on server side
+
+- **[Serverless Framework](https://www.serverless.com/)** for helping to develop and deploy the serverless application
+
+- **[Melhor Envio](https://melhorenvio.com.br/)** for providing shipping service quote calculation
+
+- **[Redis](https://redis.io/)** for storing the tokens in cache for the authentication
+
+
+> For more details about the project's dependencies like specific versions of each dependency, see [package.json](https://github.com/JohnPetros/shipment-service/blob/main/package.json)
+---
+
+## 🚀 How to run the application?
+
+### 🔧 Prerequisites
+
+Before download the prject you will need install some tools:
+
+- [npm](https://nodejs.org/en), [yarn](https://nodejs.org/en) or [pnpm](https://pnpm.io/pt/) (I'll use npm) to install node packages
+
+- [Docker](https://www.docker.com/), the amazing technology to manage [containers](https://www.docker.com/resources/what-container/).
+
+> Besides that, it is good to have some tool to write the code like [VSCode](https://code.visualstudio.com/)
+
+> Also it is pivotal setting the environment variables on the `.env` file before running the application. See the [.env.example](https://github.com/JohnPetros/shipment-service/blob/main/.env.example) file to know which variables should be set
+
+### 📟 Running the application
+
+```bash
+
+# Clone this repo
+git clone https://github.com/JohnPetros/shipment-service.git .
+
+# Install the node dependencies
+npm install
+
+# Run the application on the local environment
+npm run local
+
+# Start the redis docker container
+docker compose up
 
 ```
-curl --location --request POST 'https://myApiEndpoint/dev/hello' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "name": "Frederic"
-}'
+
+> Probably the aplication will be running on http://localhost:3002
+
+---
+
+## 🤝 how to Contribute
+
+```bash
+
+# Fork this repo
+$ git clone https://github.com/JohnPetros/shipment-service.git
+
+# Create a nem branch for the new feature
+$ git checkout -b new-feature
+
+# Commit your changes:
+$ git commit -m 'feat: <New Feature>'
+
+# Push your branch:
+$ git push origin new-feature
+
 ```
 
-## Template features
+> You must replace new-feature with the name the feature you are adding
 
-### Project structure
+> You can also open a [new issue](https://github.com/JohnPetros/shipment-service/issues) about some problem, question or sugestion for the project. I will be happy to help as well as improve this application
 
-The project code base is mainly located within the `src` folder. This folder is divided in:
+---
 
-- `functions` - containing code base and configuration for your lambda functions
-- `libs` - containing shared code base between your lambdas
+## 📝 Licence
 
-```
-.
-├── src
-│   ├── functions               # Lambda configuration and source code folder
-│   │   ├── hello
-│   │   │   ├── handler.ts      # `Hello` lambda source code
-│   │   │   ├── index.ts        # `Hello` lambda Serverless configuration
-│   │   │   ├── mock.json       # `Hello` lambda input parameter, if any, for local invocation
-│   │   │   └── schema.ts       # `Hello` lambda input event JSON-Schema
-│   │   │
-│   │   └── index.ts            # Import/export of all lambda configurations
-│   │
-│   └── libs                    # Lambda shared code
-│       └── apiGateway.ts       # API Gateway specific helpers
-│       └── handlerResolver.ts  # Sharable library for resolving lambda handlers
-│       └── lambda.ts           # Lambda middleware
-│
-├── package.json
-├── serverless.ts               # Serverless service file
-├── tsconfig.json               # Typescript compiler configuration
-├── tsconfig.paths.json         # Typescript paths
-└── webpack.config.js           # Webpack configuration
-```
+This application is under MIT Licence. See [the licence file](https://github.com/JohnPetros/shipment-service/blob/main/license) to get more details about it.
 
-### 3rd party libraries
+---
 
-- [json-schema-to-ts](https://github.com/ThomasAribart/json-schema-to-ts) - uses JSON-Schema definitions used by API Gateway for HTTP request validation to statically generate TypeScript types in your lambda's handler code base
-- [middy](https://github.com/middyjs/middy) - middleware engine for Node.Js lambda. This template uses [http-json-body-parser](https://github.com/middyjs/middy/tree/master/packages/http-json-body-parser) to convert API Gateway `event.body` property, originally passed as a stringified JSON, to its corresponding parsed object
-- [@serverless/typescript](https://github.com/serverless/typescript) - provides up-to-date TypeScript definitions for your `serverless.ts` service file
-
-### Advanced usage
-
-Any tsconfig.json can be used, but if you do, set the environment variable `TS_NODE_CONFIG` for building the application, eg `TS_NODE_CONFIG=./tsconfig.app.json npx serverless webpack`
+<p align="center">
+  Made with 💜 by John Petros 👋🏻
+</p>
