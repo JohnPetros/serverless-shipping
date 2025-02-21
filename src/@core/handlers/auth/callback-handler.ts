@@ -16,6 +16,7 @@ export class CallbackHandler {
 
   async handle(http: Http<Schema>) {
     const { code } = http.getQueryParams()
+    console.log({ code })
     const jwt = await this.shippingProvider.getToken(code)
 
     await Promise.all([
